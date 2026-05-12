@@ -1,0 +1,12 @@
+/Debug/
+.settings/language.settings.xml
+.settings
+/Release/
+***.asv
+FixedpointTrigTest/*.exe 
+FixedpointTrigTest/*.csv
+Datalogging/__pycache__/
+*/__pycache__/
+Python/__pycache__/
+build-test/
+build/
