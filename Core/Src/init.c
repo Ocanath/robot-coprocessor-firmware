@@ -7,7 +7,7 @@
 
 
 #include "init.h"
-//#include "m_uart.h"
+#include "uart_buffers.h"
 
 FDCAN_HandleTypeDef hfdcan1;
 
@@ -352,7 +352,7 @@ void MX_USART1_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USART1_Init 2 */
-
+  m_uart_start_interrupts(&m_huart1);
   /* USER CODE END USART1_Init 2 */
 
 }
@@ -400,7 +400,7 @@ void MX_USART2_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USART2_Init 2 */
-
+  m_uart_start_interrupts(&m_huart2);
   /* USER CODE END USART2_Init 2 */
 
 }
@@ -448,7 +448,7 @@ void MX_USART3_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USART3_Init 2 */
-
+  m_uart_start_interrupts(&m_huart3);
   /* USER CODE END USART3_Init 2 */
 
 }
