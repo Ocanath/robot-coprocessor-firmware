@@ -28,4 +28,7 @@ extern dma_uart_t m_huart1;
 extern dma_uart_t m_huart2;
 extern dma_uart_t m_huart3;
 
+
+void init_uart_buffers(void);
+
 #endif /* INC_UART_BUFFERS_H_ */
