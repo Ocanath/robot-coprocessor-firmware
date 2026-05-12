@@ -36,7 +36,7 @@
 			<locationURI>PROJECT_LOC/external/stm32-dma-cobs-uart/byte-stuffing/C-COBS</locationURI>
 		</link>
 		<link>
-			<name>Core/Src/src</name>
+			<name>Core/Src/dartt</name>
 			<type>2</type>
 			<locationURI>PROJECT_LOC/external/dartt-protocol/src</locationURI>
 		</link>
