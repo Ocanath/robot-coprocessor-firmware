@@ -1,0 +1,3 @@
+[submodule "external/stm32-dma-cobs-uart"]
+	path = external/stm32-dma-cobs-uart
+	url = https://github.com/Ocanath/stm32-dma-cobs-uart
