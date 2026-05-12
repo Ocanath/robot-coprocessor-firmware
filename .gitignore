@@ -10,3 +10,5 @@ Datalogging/__pycache__/
 Python/__pycache__/
 build-test/
 build/
+/DebugBootloader/
+/ReleaseBootloader/

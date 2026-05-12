@@ -41,15 +41,17 @@ _estack = ORIGIN(RAM) + LENGTH(RAM); /* end of "RAM" Ram type memory */
 _Min_Heap_Size = 0x200; /* required amount of heap */
 _Min_Stack_Size = 0x400; /* required amount of stack */
 
-/* Define page size to ensure flash never runs into filesystem */
+/*Our definitions.*/
 PAGE_SIZE = 0x800;
+BOOTLOADER_SIZE = 22K;
 
 /* Memories definition */
 MEMORY
 {
-	RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = (32K-4)
-	MAGIC_WORD (xrw) : ORIGIN = ORIGIN(RAM)+LENGTH(RAM),	LENGTH = 4
-	FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = (128K - PAGE_SIZE)
+  RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = (32K-4)
+  MAGIC_WORD (xrw) : ORIGIN = ORIGIN(RAM)+LENGTH(RAM),	LENGTH = 4
+  BOOTLOADER (rx) : ORIGIN = 0x8000000,	LENGTH = BOOTLOADER_SIZE
+  FLASH    (rx)    : ORIGIN = ORIGIN(BOOTLOADER) + BOOTLOADER_SIZE + PAGE_SIZE,   LENGTH = (128K - ((BOOTLOADER_SIZE + PAGE_SIZE) + PAGE_SIZE) )
 }
 ram_blockstart_keyword_addr__ = ORIGIN(MAGIC_WORD);
 
