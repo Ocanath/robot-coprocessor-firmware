@@ -10,9 +10,6 @@ int main(void)
 {
 	HAL_Init();
 	SystemClock_Config();
-	//init from fds for uart
-	init_uart_buffers();
-
 	MX_GPIO_Init();
 	MX_DMA_Init();
 	MX_TIM1_Init();
