@@ -364,7 +364,6 @@ void MX_USART1_UART_Init(void)
 			gl_uart1_tx_buf,
 			sizeof(gl_uart1_tx_buf)
 	);
-	m_uart_start_interrupts(&m_huart1);
 	/* USER CODE END USART1_Init 2 */
 
 }
@@ -424,7 +423,6 @@ void MX_USART2_UART_Init(void)
 			gl_uart2_tx_buf,
 			sizeof(gl_uart2_tx_buf)
 	);
-	m_uart_start_interrupts(&m_huart2);
 	/* USER CODE END USART2_Init 2 */
 
 }
@@ -484,7 +482,6 @@ void MX_USART3_UART_Init(void)
 			gl_uart3_tx_buf,
 			sizeof(gl_uart3_tx_buf)
 	);
-	m_uart_start_interrupts(&m_huart3);
 	/* USER CODE END USART3_Init 2 */
 
 }
