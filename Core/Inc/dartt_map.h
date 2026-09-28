@@ -2,7 +2,7 @@
  * dartt_map.h
  *
  *  Created on: Sep 27, 2026
- *      Author: redux
+ *      Author: ocanath
  */
 
 #ifndef DARTT_MAP_H_
@@ -33,5 +33,5 @@ typedef struct controller_regmap_t
 
 extern ctl_fds_t default_fds;
 extern dartt_mem_t gl_dp_alias;
-
+extern controller_regmap_t gl_dp;
 #endif /* DARTT_MAP_H_ */

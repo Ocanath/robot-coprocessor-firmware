@@ -4,7 +4,8 @@
 #include "dartt.h"
 #include "dartt_map.h"
 #include "fds.h"
-
+#include "persistent_settings.h"
+#include <string.h>
 /**
  * TODO:
  *
@@ -45,8 +46,6 @@
  *
  *
  */
-
-extern controller_regmap_t gl_dp;
 
 
 /*Helper function. Encode a frame received from one serial port, copy the encoded frame, and transmit it*/
@@ -92,13 +91,18 @@ int handle_dartt(void)
 			rc = dartt_parse_general_message(&m_huart2.rx_pld_msg, TYPE_SERIAL_MESSAGE, &gl_dp_alias, &m_huart2.tx_buf_alias);
 			if(rc != DARTT_PROTOCOL_SUCCESS)
 			{
+				m_huart2.rx_decoded.length = 0;
 				return rc;
 			}
 			if(m_huart2.tx_buf_alias.len != 0)
 			{
 				m_huart2.tx_mem.length = m_huart2.tx_buf_alias.len;
 				rc = cobs_encode_single_buffer(&m_huart2.tx_mem);
-				if(rc != COBS_SUCCESS){return rc;}
+				if(rc != COBS_SUCCESS)
+				{
+					m_huart2.rx_decoded.length = 0;
+					return rc;
+				}
 				m_uart_dma_transmit(&m_huart2);
 			}
 		}
@@ -113,6 +117,7 @@ int handle_dartt(void)
 				rc = serial_forward(&m_huart2, &m_huart3);	//this encodes and erases the incoming messge on uart2
 			}
 		}
+		m_huart2.rx_decoded.length = 0;	//erase message after handling
 	}
 	//handle other direction - pass from 1/3 to 2
 	if(gl_dp.wifi_passthrough_en != 0)
@@ -128,19 +133,6 @@ int handle_dartt(void)
 	}
 
 	return rc;
-}
-
-void load_flash_params(void)
-{
-	//loading
-	if(is_page_empty(sizeof(controller_regmap_t)/sizeof(uint32_t)) == 0)
-	{
-		m_read_flash((uint32_t*)(&gl_dp.fds), sizeof(controller_regmap_t)/sizeof(uint32_t));
-	}
-	else
-	{
-		m_write_flash((uint64_t*)(&default_fds), sizeof(controller_regmap_t)/sizeof(uint64_t));
-	}
 }
 
 
