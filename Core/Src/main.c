@@ -112,16 +112,21 @@ int handle_dartt(void)
 			{
 				rc = serial_forward(&m_huart2, &m_huart3);	//this encodes and erases the incoming messge on uart2
 			}
-			if(m_huart1.rx_decoded.length != 0)
-			{
-				serial_forward(&m_huart1, &m_huart2);
-			}
-			if(m_huart2.rx_decoded.length != 0)
-			{
-				serial_forward(&m_huart3, &m_huart2);
-			}
 		}
 	}
+	//handle other direction - pass from 1/3 to 2
+	if(gl_dp.wifi_passthrough_en != 0)
+	{
+		if(m_huart1.rx_decoded.length != 0)
+		{
+			serial_forward(&m_huart1, &m_huart2);
+		}
+		if(m_huart3.rx_decoded.length != 0)
+		{
+			serial_forward(&m_huart3, &m_huart2);
+		}
+	}
+
 	return rc;
 }
 
@@ -134,7 +139,7 @@ void load_flash_params(void)
 	}
 	else
 	{
-		m_write_flash((uint64_t*)(&gl_dp.fds), sizeof(controller_regmap_t)/sizeof(uint64_t));
+		m_write_flash((uint64_t*)(&default_fds), sizeof(controller_regmap_t)/sizeof(uint64_t));
 	}
 }
 

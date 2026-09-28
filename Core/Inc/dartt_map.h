@@ -31,7 +31,7 @@ typedef struct controller_regmap_t
 	uint32_t wifi_passthrough_en;
 }controller_regmap_t;
 
-
+extern ctl_fds_t default_fds;
 extern dartt_mem_t gl_dp_alias;
 
 #endif /* DARTT_MAP_H_ */
