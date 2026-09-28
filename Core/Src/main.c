@@ -70,13 +70,18 @@ int serial_forward(dma_uart_t * in, dma_uart_t * out)
 	return 0;
 }
 
-int handle_wifi_channel(void)
+/*
+ * Function which pipes writes out to each address range, and pipes all reads on peripheral UART channels through UART2
+ */
+int handle_wifi_passthrough(void)
 {
+	int rc = 0;
 	if(m_huart2.rx_decoded.length != 0)
 	{
-		int rc =  dartt_frame_to_payload(&m_huart2.rx_decode_alias, TYPE_SERIAL_MESSAGE, PAYLOAD_ALIAS, &m_huart2.rx_pld_msg);
+		rc =  dartt_frame_to_payload(&m_huart2.rx_decode_alias, TYPE_SERIAL_MESSAGE, PAYLOAD_ALIAS, &m_huart2.rx_pld_msg);
 		if(rc != DARTT_PROTOCOL_SUCCESS)
 		{
+			m_huart2.rx_decoded.length = 0;	//erase the bad message and continue
 			return rc;
 		}
 		uint32_t addr = m_huart2.rx_pld_msg.address;
@@ -92,11 +97,18 @@ int handle_wifi_channel(void)
 		}
 		else if(addr >= gl_dp.fds.uart3_lo && addr <= gl_dp.fds.uart3_hi)
 		{
-			rc = serial_forward(&m_huart2, &m_huart3);
+			rc = serial_forward(&m_huart2, &m_huart3);	//this encodes and erases the incoming messge on uart2
 		}
-		return rc;
 	}
-	return 0;
+	if(m_huart1.rx_decoded.length != 0)
+	{
+		serial_forward(&m_huart1, &m_huart2);
+	}
+	if(m_huart2.rx_decoded.length != 0)
+	{
+		serial_forward(&m_huart3, &m_huart2);
+	}
+	return rc;
 }
 
 
@@ -121,7 +133,7 @@ int main(void)
 	while (1)
 	{
 		//do stuff
-		handle_wifi_channel();
+		handle_wifi_passthrough();
 	}
 }
 
