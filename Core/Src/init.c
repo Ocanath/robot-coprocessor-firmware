@@ -424,7 +424,8 @@ void MX_USART2_UART_Init(void)
 			sizeof(gl_uart2_tx_buf)
 	);
 	/* USER CODE END USART2_Init 2 */
-
+	m_huart2.de_port = GPIOA;
+	m_huart2.de_pin = GPIO_PIN_1;
 }
 
 /**
