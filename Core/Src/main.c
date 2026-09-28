@@ -3,6 +3,7 @@
 #include "uart_buffers.h"
 #include "dartt.h"
 #include "dartt_map.h"
+#include "fds.h"
 
 /**
  * TODO:
@@ -124,6 +125,19 @@ int handle_dartt(void)
 	return rc;
 }
 
+void load_flash_params(void)
+{
+	//loading
+	if(is_page_empty(sizeof(controller_regmap_t)/sizeof(uint32_t)) == 0)
+	{
+		m_read_flash((uint32_t*)(&gl_dp.fds), sizeof(controller_regmap_t)/sizeof(uint32_t));
+	}
+	else
+	{
+		m_write_flash((uint64_t*)(&gl_dp.fds), sizeof(controller_regmap_t)/sizeof(uint64_t));
+	}
+}
+
 
 /**
  * @brief  The application entry point.
@@ -136,6 +150,7 @@ int main(void)
 	MX_GPIO_Init();
 	MX_DMA_Init();
 	MX_TIM1_Init();
+	load_flash_params();
 	MX_TIM2_Init();
 	MX_SPI1_Init();
 	MX_USART2_UART_Init();
