@@ -2,6 +2,7 @@
 #include "init.h"
 #include "uart_buffers.h"
 #include "dartt.h"
+#include "dartt_map.h"
 
 /**
  * TODO:
@@ -44,6 +45,59 @@
  *
  */
 
+extern controller_regmap_t gl_dp;
+
+
+/*Helper function. Encode a frame received from one serial port, copy the encoded frame, and transmit it*/
+int serial_forward(dma_uart_t * in, dma_uart_t * out)
+{
+	int rc = cobs_encode_single_buffer(&in->rx_decoded);
+	if(rc != COBS_SUCCESS){return rc;}
+
+	if(in->rx_decoded.length > out->tx_mem.size)
+	{
+		return DARTT_ERROR_MEMORY_OVERRUN;	//throw dartt overrun code
+	}
+
+	out->tx_mem.length = 0;
+	for(size_t i = 0; i < in->rx_decoded.length; i++)	//encode is in-place - so rx_decoded now contains an encoded buffer
+	{
+		out->tx_mem.buf[i] = in->rx_decoded.buf[i];
+		out->tx_mem.length++;
+	}
+	in->rx_decoded.length = 0;
+	m_uart_dma_transmit(out);
+	return 0;
+}
+
+int handle_wifi_channel(void)
+{
+	if(m_huart2.rx_decoded.length != 0)
+	{
+		int rc =  dartt_frame_to_payload(&m_huart2.rx_decode_alias, TYPE_SERIAL_MESSAGE, PAYLOAD_ALIAS, &m_huart2.rx_pld_msg);
+		if(rc != DARTT_PROTOCOL_SUCCESS)
+		{
+			return rc;
+		}
+		uint32_t addr = m_huart2.rx_pld_msg.address;
+		if(addr == gl_dp.fds.config_addr)
+		{
+			//our address. route to gl_dp config map
+			rc = dartt_parse_general_message(&m_huart2.rx_pld_msg, TYPE_SERIAL_MESSAGE, &gl_dp_alias, &m_huart2.tx_buf_alias);
+		}
+
+		else if(addr >= gl_dp.fds.uart1_lo && addr <= gl_dp.fds.uart1_hi)
+		{
+			rc = serial_forward(&m_huart2, &m_huart1);
+		}
+		else if(addr >= gl_dp.fds.uart3_lo && addr <= gl_dp.fds.uart3_hi)
+		{
+			rc = serial_forward(&m_huart2, &m_huart3);
+		}
+		return rc;
+	}
+	return 0;
+}
 
 
 /**
@@ -67,6 +121,7 @@ int main(void)
 	while (1)
 	{
 		//do stuff
+		handle_wifi_channel();
 	}
 }
 
