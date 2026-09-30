@@ -85,7 +85,8 @@ int handle_dartt(void)
 			return rc;
 		}
 		uint32_t addr = m_huart2.rx_pld_msg.address;
-		if(addr == gl_dp.fds.config_addr)
+
+		if(addr == gl_misc_address)
 		{
 			//our address. route to gl_dp config map
 			rc = dartt_parse_general_message(&m_huart2.rx_pld_msg, TYPE_SERIAL_MESSAGE, &gl_dp_alias, &m_huart2.tx_buf_alias);
@@ -158,7 +159,6 @@ int main(void)
 	gl_dp.led_state = 1;
 	while (1)
 	{
-		//do stuff
 		handle_dartt();
 		HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, gl_dp.led_state);
 	}

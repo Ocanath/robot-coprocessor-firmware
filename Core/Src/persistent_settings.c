@@ -12,6 +12,7 @@
  */
 #define FDS_WRITE_PAD_SIZE (sizeof(ctl_fds_t)+(sizeof(ctl_fds_t) % sizeof(uint64_t)))
 
+unsigned char gl_misc_address = 0xFF;
 
 uint32_t write_flash(void * data, size_t num_bytes)
 {
@@ -36,5 +37,6 @@ void load_flash_params(void)
 		write_flash(&default_fds, sizeof(ctl_fds_t));
 		memcpy(&gl_dp.fds, &default_fds, sizeof(ctl_fds_t));
 	}
+	gl_misc_address = dartt_get_complementary_address((unsigned char)(gl_dp.fds.config_addr & 0xFF));
 }
 
