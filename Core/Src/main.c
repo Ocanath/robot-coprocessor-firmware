@@ -141,7 +141,7 @@ int handle_dartt(void)
  * @retval int
  */
 int main(void)
-{
+ {
 	HAL_Init();
 	SystemClock_Config();
 	MX_GPIO_Init();
@@ -155,10 +155,12 @@ int main(void)
 	MX_I2S2_Init();
 	MX_USART1_UART_Init();
 	MX_USART3_UART_Init();
+	gl_dp.led_state = 1;
 	while (1)
 	{
 		//do stuff
 		handle_dartt();
+		HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, gl_dp.led_state);
 	}
 	//socat TCP-LISTEN:8097,fork,reuseaddr TCP:100.114.84.20:8096
 }

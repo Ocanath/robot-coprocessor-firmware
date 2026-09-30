@@ -325,7 +325,7 @@ void MX_USART1_UART_Init(void)
 
 	/* USER CODE END USART1_Init 1 */
 	huart1.Instance = USART1;
-	huart1.Init.BaudRate = 115200;
+	huart1.Init.BaudRate = 921600;
 	huart1.Init.WordLength = UART_WORDLENGTH_8B;
 	huart1.Init.StopBits = UART_STOPBITS_1;
 	huart1.Init.Parity = UART_PARITY_NONE;
@@ -364,6 +364,8 @@ void MX_USART1_UART_Init(void)
 			gl_uart1_tx_buf,
 			sizeof(gl_uart1_tx_buf)
 	);
+	m_huart1.de_port = USART1_DE_GPIO_Port;
+	m_huart1.de_pin = USART1_DE_Pin;
 	/* USER CODE END USART1_Init 2 */
 
 }
@@ -384,7 +386,7 @@ void MX_USART2_UART_Init(void)
 
 	/* USER CODE END USART2_Init 1 */
 	huart2.Instance = USART2;
-	huart2.Init.BaudRate = 115200;
+	huart2.Init.BaudRate = 921600;
 	huart2.Init.WordLength = UART_WORDLENGTH_8B;
 	huart2.Init.StopBits = UART_STOPBITS_1;
 	huart2.Init.Parity = UART_PARITY_NONE;
@@ -424,8 +426,8 @@ void MX_USART2_UART_Init(void)
 			sizeof(gl_uart2_tx_buf)
 	);
 	/* USER CODE END USART2_Init 2 */
-	m_huart2.de_port = GPIOA;
-	m_huart2.de_pin = GPIO_PIN_1;
+	m_huart2.de_port = USART2_DE_GPIO_Port;
+	m_huart2.de_pin = USART2_DE_Pin;
 }
 
 /**
@@ -444,7 +446,7 @@ void MX_USART3_UART_Init(void)
 
 	/* USER CODE END USART3_Init 1 */
 	huart3.Instance = USART3;
-	huart3.Init.BaudRate = 115200;
+	huart3.Init.BaudRate = 921600;
 	huart3.Init.WordLength = UART_WORDLENGTH_8B;
 	huart3.Init.StopBits = UART_STOPBITS_1;
 	huart3.Init.Parity = UART_PARITY_NONE;
@@ -483,6 +485,8 @@ void MX_USART3_UART_Init(void)
 			gl_uart3_tx_buf,
 			sizeof(gl_uart3_tx_buf)
 	);
+	m_huart3.de_port = USART3_DE_GPIO_Port;
+	m_huart3.de_pin = USART3_DE_Pin;
 	/* USER CODE END USART3_Init 2 */
 
 }
