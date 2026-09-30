@@ -160,5 +160,6 @@ int main(void)
 		//do stuff
 		handle_dartt();
 	}
+	//socat TCP-LISTEN:8097,fork,reuseaddr TCP:100.114.84.20:8096
 }
 

@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 //#include "m_uart.h"
+#include "dartt_map.h"
 #include "uart_buffers.h"
 /* USER CODE END Includes */
 
@@ -205,6 +206,16 @@ void SysTick_Handler(void)
   /* USER CODE END SysTick_IRQn 1 */
 }
 
+/* USER CODE BEGIN 1 */
+void HAL_IncTick(void)
+{
+	gl_dp.tick += (uint32_t)uwTickFreq;
+}
+
+uint32_t HAL_GetTick(void)
+{
+  return gl_dp.tick;
+}
 /******************************************************************************/
 /* STM32G4xx Peripheral Interrupt Handlers                                    */
 /* Add here the Interrupt Handlers for the used peripherals.                  */

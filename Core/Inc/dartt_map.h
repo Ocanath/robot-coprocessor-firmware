@@ -29,6 +29,7 @@ typedef struct controller_regmap_t
 	uint32_t load_action;	//single bit, when set the action queued in action_register is executed
 	uint32_t led_state;
 	uint32_t wifi_passthrough_en;
+	uint32_t tick;
 }controller_regmap_t;
 
 extern ctl_fds_t default_fds;
